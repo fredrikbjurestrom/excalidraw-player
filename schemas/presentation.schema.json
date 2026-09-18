@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://excalidraw-player.dev/schemas/presentation.schema.json",
+  "title": "Excalidraw Player presentation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["scenes"],
+  "properties": {
+    "title": { "type": "string", "description": "Optional presentation title." },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["config"],
+        "properties": {
+          "title": { "type": "string" },
+          "config": { "type": "string", "description": "URL relative to this manifest." },
+          "transition": { "enum": ["fade", "none"], "default": "fade" }
+        }
+      }
+    }
+  }
+}

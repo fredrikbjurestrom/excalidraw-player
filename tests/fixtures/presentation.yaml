@@ -1,0 +1,6 @@
+title: Minimal architecture example
+scenes:
+  - config: scene-one.yaml
+    transition: fade
+  - config: scene-two.yaml
+    transition: fade

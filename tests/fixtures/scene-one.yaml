@@ -1,0 +1,24 @@
+title: Direct request
+source: scene-one.excalidraw
+objects:
+  title:
+    text: Direct request
+  client:
+    text: Client
+  service:
+    text: Service
+  request:
+    arrow:
+      label: Request
+      from: client
+      to: service
+timeline:
+  - name: Context
+    show: [title]
+    focus: [title]
+  - name: Components
+    show: [client, service]
+    focus: [client, service]
+  - name: Request
+    draw: [request]
+    focus: [client, service]

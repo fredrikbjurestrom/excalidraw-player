@@ -1,0 +1,29 @@
+title: Gateway introduced
+source: scene-two.excalidraw
+objects:
+  title:
+    text: Gateway introduced
+  client:
+    text: Client
+  gateway:
+    text: Gateway
+  service:
+    text: Service
+  client-request:
+    arrow:
+      label: Request
+      from: client
+      to: gateway
+  service-request:
+    arrow:
+      label: Request
+      from: gateway
+      to: service
+timeline:
+  - name: New architecture
+    show: [title, client, service]
+    focus: [title, client, service]
+  - name: Add gateway
+    show: [gateway]
+    draw: [client-request, service-request]
+    focus: [client, gateway, service]

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://excalidraw-player.dev/schemas/scene.schema.json",
+  "title": "Excalidraw Player scene",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["source", "objects", "timeline"],
+  "properties": {
+    "title": { "type": "string" },
+    "source": { "type": "string", "description": "URL to .excalidraw or Obsidian .excalidraw.md." },
+    "objects": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string" },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["text"],
+            "properties": { "text": { "type": "string" }, "label": { "type": "string" } }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id"],
+            "properties": { "id": { "type": "string" }, "label": { "type": "string" } }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["arrow"],
+            "properties": {
+              "label": { "type": "string" },
+              "arrow": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "label": { "type": "string" },
+                  "from": { "type": "string" },
+                  "to": { "type": "string" },
+                  "occurrence": { "type": "integer", "minimum": 1 }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "timeline": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "show": { "$ref": "#/$defs/names" },
+          "draw": { "$ref": "#/$defs/names" },
+          "hide": { "$ref": "#/$defs/names" },
+          "dim": { "$ref": "#/$defs/names" },
+          "emphasize": { "$ref": "#/$defs/names" },
+          "focus": { "$ref": "#/$defs/names" },
+          "drawDuration": { "type": "number", "minimum": 0 },
+          "focusPadding": { "type": "number", "minimum": 0 },
+          "hold": { "type": "number", "minimum": 0 }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "names": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    }
+  }
+}

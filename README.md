@@ -1,44 +1,20 @@
 # Excalidraw Player
 
-A framework-independent Web Component for turning Excalidraw drawings into animated, step-by-step presentations.
-
-This repository contains the reusable package and a neutral example application. The example is also the GitHub Pages demo and a starting point for creating a presentation of your own.
+Turn Excalidraw drawings into animated, step-by-step presentations in any web application. Excalidraw Player is a framework-independent Web Component: install it, register it once in browser code, then point the element at a presentation file.
 
 > This is an independent community package and is not affiliated with or endorsed by Excalidraw.
 
-## Requirements
+## Install
 
-- Node.js 20 or newer
-- npm
-
-## Run the example locally
+Install a tagged release in your application:
 
 ```bash
-npm install
-npm run dev:basic
+npm install github:fredrikbjurestrom/excalidraw-player#v0.1.0
 ```
 
-Open the URL printed by Vite. The example uses synthetic architecture data and contains no customer-specific material.
+## Add the player
 
-## Build everything
-
-```bash
-npm test
-npm run build
-npm run pack:player
-```
-
-The package tarball contains only the files listed in the root `package.json` `files` field. Examples, tests and source files remain in the repository for documentation and development, but are not included in the package artifact.
-
-## Use the player in another project
-
-The player is a Web Component, so a plain Vite/HTML project is enough. After creating a Vite vanilla project, install a tagged GitHub release:
-
-```bash
-npm install github:YOUR_GITHUB_USER/excalidraw-player#v0.1.0
-```
-
-Then register and use it:
+Register the element once, in browser-only application code:
 
 ```js
 import { defineExcalidrawPlayer } from "excalidraw-player";
@@ -46,13 +22,67 @@ import { defineExcalidrawPlayer } from "excalidraw-player";
 defineExcalidrawPlayer();
 ```
 
+Then add it where the presentation should appear:
+
 ```html
 <excalidraw-player src="/presentation.yaml"></excalidraw-player>
 ```
 
-Put the presentation manifest, scene YAML and Excalidraw files in the consuming application. See `examples/basic` for a complete minimal application.
+For server-side rendered applications, call `defineExcalidrawPlayer()` only on the client. The element works directly in HTML and in frameworks that support custom elements.
 
-## GitHub Pages
+## Provide presentation files
+
+Host the presentation manifest, scene YAML files, and Excalidraw drawings with your application. The `src` URL may point to a presentation manifest or directly to a scene YAML file.
+
+```text
+public/
+ presentation.yaml
+ scene-one.yaml
+ scene-one.excalidraw
+```
+
+See [examples/basic](examples/basic) for a complete consumer application, and [the API reference](docs/api.md) for attributes, events, methods, slots, and framework integration.
+
+## Customize and control
+
+Use slots to add your own branding:
+
+```html
+<excalidraw-player src="/presentation.yaml" autoplay>
+ <img slot="logo" src="/logo.svg" alt="Acme" />
+ <span slot="brand">Acme architecture</span>
+</excalidraw-player>
+```
+
+The player can also be controlled from JavaScript:
+
+```js
+const player = document.querySelector("excalidraw-player");
+await player.goTo(0, 2);
+player.play();
+```
+
+See [docs/api.md](docs/api.md) for the full API and [docs/configuration.md](docs/configuration.md) for presentation and scene file formats.
+
+## Develop this repository
+
+To run the included demo or work on the package itself, use Node.js 20+ and npm:
+
+```bash
+npm install
+npm run dev:basic
+```
+
+Run the package checks with:
+
+```bash
+npm test
+npm run build
+```
+
+The example uses synthetic architecture data and contains no customer-specific material.
+
+## Demo deployment
 
 The repository includes a GitHub Actions workflow at `.github/workflows/pages.yml`. It builds and deploys `examples/basic` to GitHub Pages whenever `main` is updated.
 
@@ -65,20 +95,8 @@ After pushing the repository to GitHub:
 The example uses relative asset paths so it works when hosted below a repository path such as:
 
 ```text
-https://YOUR_GITHUB_USER.github.io/excalidraw-player/
+https://fredrikbjurestrom.github.io/excalidraw-player/
 ```
-
-## Repository layout
-
-```text
-src/                    Reusable player package source
-examples/basic/         Neutral consumer application and demo
-docs/                   Package documentation
-schemas/                Configuration schemas
-tests/                  Generic package tests
-```
-
-The root is itself the `excalidraw-player` package. Keeping the package at repository root makes direct GitHub installation straightforward. The examples are workspaces for development, but are excluded from the packaged dependency.
 
 ## License
 

@@ -37,18 +37,23 @@ export async function renderAnnotatedSvg(drawing: ExcalidrawDrawing): Promise<SV
   });
 
   // Chromium does not reliably register SVG @font-face rules inside a shadow root.
-  // Promote Excalidraw's generated font rules to the document once.
-  if (!document.head.querySelector('[data-excalidraw-player-fonts]')) {
-    const fontCss = [...svg.querySelectorAll('style')]
-      .map((style) => style.textContent ?? '')
-      .filter((css) => css.includes('@font-face'))
-      .join('\n');
-    if (fontCss) {
-      const globalFonts = document.createElement('style');
+  // Promote the active SVG's generated (and character-subsetted) font rules to
+  // the document. This must be refreshed for every scene: different scenes may
+  // use different font families or different glyph subsets of the same family.
+  const fontCss = [...svg.querySelectorAll('style')]
+    .map((style) => style.textContent ?? '')
+    .filter((css) => css.includes('@font-face'))
+    .join('\n');
+  if (fontCss) {
+    let globalFonts = document.head.querySelector<HTMLStyleElement>(
+      'style[data-excalidraw-player-fonts]',
+    );
+    if (!globalFonts) {
+      globalFonts = document.createElement('style');
       globalFonts.dataset.excalidrawPlayerFonts = '';
-      globalFonts.textContent = fontCss;
       document.head.appendChild(globalFonts);
     }
+    globalFonts.textContent = fontCss;
   }
 
   svg.classList.add('edp-drawing-svg');
